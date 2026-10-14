@@ -1,0 +1,343 @@
+/* OSNOVNE NASTAVITVE */
+* {
+box-sizing: border-box;
+}
+
+:root {
+--crna: #111111;
+--bela: #ffffff;
+--siva: #f5f5f5;
+--siva-temna: #777777;
+--obroba: #e8e8e8;
+--zelena: #16804a;
+}
+
+html {
+scroll-behavior: smooth;
+}
+
+body {
+margin: 0;
+padding: 20px;
+font-family: Arial, Helvetica, sans-serif;
+background: var(--siva);
+color: var(--crna);
+line-height: 1.6;
+}
+
+/* GLAVNA VSEBINA */
+header,
+.container,
+main {
+max-width: 1100px;
+margin: 20px auto;
+}
+
+header {
+padding: 25px 30px;
+background: var(--bela);
+border: 1px solid var(--obroba);
+border-radius: 16px;
+}
+
+.container {
+max-width: 500px;
+padding: 30px;
+background: var(--bela);
+border: 1px solid var(--obroba);
+border-radius: 16px;
+box-shadow: 0 8px 30px #00000008;
+}
+
+main {
+padding: 10px 0;
+}
+
+/* NASLOVI */
+h1,
+h2,
+h3 {
+line-height: 1.2;
+letter-spacing: -0.5px;
+}
+
+h1 {
+font-size: 36px;
+font-weight: 800;
+}
+
+h2 {
+font-size: 28px;
+margin-bottom: 20px;
+}
+
+h3 {
+font-size: 20px;
+}
+
+p {
+color: #555555;
+}
+
+/* NAVIGACIJA */
+nav {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 12px;
+margin: 20px 0 0;
+}
+
+nav a {
+padding: 10px 15px;
+color: #444444;
+font-size: 14px;
+font-weight: bold;
+text-decoration: none;
+border-radius: 8px;
+transition: 0.2s ease;
+}
+
+nav a:hover {
+color: var(--bela);
+background: var(--crna);
+text-decoration: none;
+}
+
+/* POVEZAVE */
+a {
+color: var(--crna);
+text-decoration: none;
+transition: 0.2s ease;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+/* OBRAZCI */
+label {
+display: block;
+margin-top: 18px;
+font-size: 14px;
+font-weight: bold;
+}
+
+input,
+textarea {
+width: 100%;
+margin-top: 7px;
+padding: 13px 14px;
+font: inherit;
+color: var(--crna);
+background: #fafafa;
+border: 1px solid #dddddd;
+border-radius: 9px;
+outline: none;
+transition: 0.2s ease;
+}
+
+input:focus,
+textarea:focus {
+background: var(--bela);
+border-color: var(--crna);
+box-shadow: 0 0 0 3px #11111110;
+}
+
+textarea {
+min-height: 120px;
+resize: vertical;
+}
+
+/* GUMBI */
+button {
+width: 100%;
+margin-top: 12px;
+padding: 13px 18px;
+font: inherit;
+font-weight: bold;
+color: var(--bela);
+background: var(--crna);
+border: 1px solid var(--crna);
+border-radius: 9px;
+cursor: pointer;
+transition: 0.2s ease;
+}
+
+button:hover {
+color: var(--crna);
+background: var(--bela);
+}
+
+button:disabled {
+color: #777777;
+background: #dddddd;
+border-color: #dddddd;
+cursor: not-allowed;
+}
+
+/* IZDELKI */
+.izdelki {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 24px;
+margin-top: 30px;
+}
+
+.kartica {
+overflow: hidden;
+padding: 18px;
+background: var(--bela);
+border: 1px solid var(--obroba);
+border-radius: 14px;
+box-shadow: 0 4px 15px #00000005;
+transition: transform 0.25s ease,
+box-shadow 0.25s ease;
+}
+
+.kartica:hover {
+transform: translateY(-5px);
+box-shadow: 0 12px 28px #0000000d;
+}
+
+.kartica img {
+display: block;
+width: 100%;
+height: 230px;
+object-fit: contain;
+background: #fafafa;
+border-radius: 10px;
+}
+
+.kartica h3 {
+margin: 16px 0 8px;
+}
+
+.kartica p {
+font-size: 14px;
+}
+
+.slika-izdelka {
+display: block;
+max-width: 100%;
+max-height: 400px;
+margin: 0 auto;
+object-fit: contain;
+}
+
+/* CENE */
+.cena {
+margin: 12px 0;
+color: var(--zelena);
+font-size: 22px;
+font-weight: 800;
+}
+
+/* SPOROČILA */
+.napaka {
+padding: 10px 14px;
+color: #b42318;
+background: #fff1f0;
+border-radius: 8px;
+}
+
+.uspeh {
+padding: 10px 14px;
+color: #137547;
+background: #eaf8ef;
+border-radius: 8px;
+}
+
+/* TABELE */
+table {
+width: 100%;
+margin-top: 25px;
+border-collapse: collapse;
+overflow: hidden;
+background: var(--bela);
+border-radius: 10px;
+}
+
+th,
+td {
+padding: 14px;
+border-bottom: 1px solid var(--obroba);
+text-align: left;
+}
+
+th {
+color: var(--bela);
+background: var(--crna);
+font-size: 13px;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+
+td img {
+max-width: 60px;
+height: auto;
+border-radius: 6px;
+}
+
+td form {
+margin: 0;
+}
+
+/* NAKUP NA TELEFONU */
+@media (max-width: 600px) {
+body {
+padding: 10px;
+}
+
+header {
+padding: 20px 15px;
+}
+
+.container {
+padding: 20px;
+}
+
+h1 {
+font-size: 29px;
+}
+
+h2 {
+font-size: 24px;
+}
+
+nav {
+gap: 5px;
+}
+
+nav a {
+padding: 9px 10px;
+font-size: 12px;
+}
+
+.izdelki {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 12px;
+}
+
+.kartica {
+padding: 10px;
+}
+
+.kartica img {
+height: 150px;
+}
+
+.kartica h3 {
+font-size: 16px;
+}
+
+.cena {
+font-size: 18px;
+}
+
+th,
+td {
+padding: 7px;
+font-size: 12px;
+}
+}
