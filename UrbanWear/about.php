@@ -1,0 +1,4 @@
+<?php $page_title='O nas'; require 'header.php'; ?>
+<section class="page-banner"><span class="eyebrow">NAŠA ZGODBA</span><h1>Manj kompliciranja.<br>Več osebnega sloga<span>.</span></h1><p>UrbanWear je šolski projekt spletne trgovine z oblačili in modnimi dodatki.</p></section>
+<section class="about-content"><img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=85" alt="Ulična moda"><div><span class="eyebrow">URBANWEAR VIZIJA</span><h2>Vsakdanji kosi.<br>Tvoj način.</h2><p>Na enem mestu smo zbrali majice, puloverje, hlače, jakne, trenirke, kape in superge. Želimo, da je pregledovanje izdelkov preprosto, stran pa moderna in uporabna na računalniku ali telefonu.</p><a class="button" href="shop.php">POGLEJ IZDELKE ↗</a></div></section>
+<?php require 'footer.php'; ?>

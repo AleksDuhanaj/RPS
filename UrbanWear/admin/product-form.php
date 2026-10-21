@@ -1,0 +1,22 @@
+<?php
+require_once __DIR__.'/../config.php';require_admin();
+$id=filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);$editing=(bool)$id;$errors=[];
+$p=['name'=>'','description'=>'','price'=>'','sale_price'=>'','category'=>'Oblačila','image'=>'','stock'=>10,'featured'=>0];
+if($editing){$stmt=$pdo->prepare('SELECT * FROM products WHERE id=?');$stmt->execute([$id]);$found=$stmt->fetch();if(!$found){http_response_code(404);exit('Izdelek ne obstaja.');}$p=$found;}
+if($_SERVER['REQUEST_METHOD']==='POST'){
+ verify_csrf();foreach(['name','description','price','sale_price','category','image','stock'] as $key)$p[$key]=trim((string)($_POST[$key]??''));
+ $p['featured']=isset($_POST['featured'])?1:0;
+ if($p['name']===''||mb_strlen($p['name'])>150)$errors[]='Ime je obvezno (največ 150 znakov).';
+ if($p['description']==='')$errors[]='Opis je obvezen.';
+ if(!is_numeric($p['price'])||(float)$p['price']<=0)$errors[]='Cena mora biti večja od 0.';
+ if($p['sale_price']!==''&&(!is_numeric($p['sale_price'])||(float)$p['sale_price']<=0||(float)$p['sale_price']>=(float)$p['price']))$errors[]='Akcijska cena mora biti pozitivna in nižja od redne.';
+ if(!in_array($p['category'],['Oblačila','Dodatki','Obutev'],true))$errors[]='Izberi veljavno kategorijo.';
+ if(!filter_var($p['image'],FILTER_VALIDATE_URL)||!in_array(strtolower(parse_url($p['image'],PHP_URL_SCHEME)??''),['http','https'],true))$errors[]='Slika mora imeti veljaven URL (http ali https).';
+ if(filter_var($p['stock'],FILTER_VALIDATE_INT)===false||(int)$p['stock']<0)$errors[]='Zaloga mora biti celo število 0 ali več.';
+ if(!$errors){$sale=$p['sale_price']===''?null:(float)$p['sale_price'];if($editing){$stmt=$pdo->prepare('UPDATE products SET name=?,description=?,price=?,sale_price=?,category=?,image=?,stock=?,featured=? WHERE id=?');$stmt->execute([$p['name'],$p['description'],(float)$p['price'],$sale,$p['category'],$p['image'],(int)$p['stock'],$p['featured'],$id]);}else{$stmt=$pdo->prepare('INSERT INTO products(name,description,price,sale_price,category,image,stock,featured) VALUES(?,?,?,?,?,?,?,?)');$stmt->execute([$p['name'],$p['description'],(float)$p['price'],$sale,$p['category'],$p['image'],(int)$p['stock'],$p['featured']]);}flash($editing?'Izdelek je posodobljen.':'Nov izdelek je dodan.');header('Location: index.php');exit;}
+}
+$page_title=$editing?'Uredi izdelek':'Dodaj izdelek';require __DIR__.'/../header.php';
+?>
+<section class="page-banner compact-banner"><span class="eyebrow">ADMIN / IZDELKI</span><h1><?= $editing?'Uredi izdelek':'Dodaj izdelek' ?><span>.</span></h1><p>Vnesi podatke, ki bodo prikazani v trgovini.</p></section>
+<section class="admin-form-wrap"><a class="back-link" href="index.php">← Nazaj v administracijo</a><?php if($errors): ?><div class="notice error"><ul><?php foreach($errors as $er): ?><li><?= e($er) ?></li><?php endforeach; ?></ul></div><?php endif; ?><form method="post" class="form-stack admin-product-form"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><label>Ime izdelka<input name="name" required maxlength="150" value="<?= e($p['name']) ?>"></label><label>Opis<textarea name="description" required rows="5"><?= e($p['description']) ?></textarea></label><div class="form-row"><label>Redna cena (€)<input type="number" name="price" min="0.01" step="0.01" required value="<?= e($p['price']) ?>"></label><label>Akcijska cena (€) – neobvezno<input type="number" name="sale_price" min="0.01" step="0.01" value="<?= e($p['sale_price']) ?>"></label></div><div class="form-row"><label>Kategorija<select name="category"><option <?= $p['category']==='Oblačila'?'selected':'' ?>>Oblačila</option><option <?= $p['category']==='Dodatki'?'selected':'' ?>>Dodatki</option><option <?= $p['category']==='Obutev'?'selected':'' ?>>Obutev</option></select></label><label>Zaloga<input type="number" name="stock" min="0" step="1" required value="<?= e($p['stock']) ?>"></label></div><label>URL slike<input type="url" name="image" required placeholder="https://..." value="<?= e($p['image']) ?>"><small>Uporabi neposredno povezavo do slike.</small></label><?php if($p['image']): ?><img class="admin-preview" src="<?= e($p['image']) ?>" alt="Predogled slike"><?php endif; ?><label class="check-label"><input type="checkbox" name="featured" value="1" <?= $p['featured']?'checked':'' ?>> Prikaži med izbranimi izdelki na domači strani</label><button class="button button-dark"><?= $editing?'SHRANI SPREMEMBE':'DODAJ IZDELEK' ?></button></form></section>
+<?php require __DIR__.'/../footer.php'; ?>
